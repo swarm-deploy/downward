@@ -1,10 +1,46 @@
 package downward
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
 type Info struct {
-	Stack   Stack
-	Service Service
-	Task    Task
-	Node    Node
+	Stack   Stack   `json:"stack"`
+	Service Service `json:"service"`
+	Task    Task    `json:"task"`
+	Node    Node    `json:"node"`
+}
+
+func Load() (Info, error) {
+	var slot *int
+	if value, ok := os.LookupEnv(EnvTaskSlot); ok {
+		parsedSlot, err := strconv.Atoi(value)
+		if err != nil {
+			return Info{}, fmt.Errorf("parse %s: %w", EnvTaskSlot, err)
+		}
+		slot = &parsedSlot
+	}
+
+	return Info{
+		Stack: Stack{
+			Name: os.Getenv(EnvStackName),
+		},
+		Service: Service{
+			ID:   os.Getenv(EnvServiceID),
+			Name: os.Getenv(EnvServiceName),
+		},
+		Task: Task{
+			ID:   os.Getenv(EnvTaskID),
+			Name: os.Getenv(EnvTaskName),
+			Slot: slot,
+		},
+		Node: Node{
+			ID:   os.Getenv(EnvNodeID),
+			Name: os.Getenv(EnvNodeName),
+		},
+	}, nil
 }
 
 func (i Info) ToMap() map[string]any {
@@ -21,7 +57,7 @@ func (i Info) ToMap() map[string]any {
 }
 
 type Stack struct {
-	Name string `env:"SWARM_STACK_NAME"`
+	Name string `env:"SWARM_STACK_NAME" json:"name"`
 }
 
 func (s Stack) ToMap() map[string]any {
@@ -31,8 +67,8 @@ func (s Stack) ToMap() map[string]any {
 }
 
 type Service struct {
-	ID   string `env:"SWARM_SERVICE_ID"`
-	Name string `env:"SWARM_SERVICE_NAME"`
+	ID   string `env:"SWARM_SERVICE_ID" json:"id"`
+	Name string `env:"SWARM_SERVICE_NAME" json:"name"`
 }
 
 func (s Service) ToMap() map[string]any {
@@ -43,9 +79,9 @@ func (s Service) ToMap() map[string]any {
 }
 
 type Task struct {
-	ID   string `env:"SWARM_TASK_ID"`
-	Name string `env:"SWARM_TASK_NAME"`
-	Slot *int   `env:"SWARM_TASK_SLOT"`
+	ID   string `env:"SWARM_TASK_ID" json:"id"`
+	Name string `env:"SWARM_TASK_NAME" json:"name"`
+	Slot *int   `env:"SWARM_TASK_SLOT" json:"slot"`
 }
 
 func (t Task) ToMap() map[string]any {
@@ -57,8 +93,8 @@ func (t Task) ToMap() map[string]any {
 }
 
 type Node struct {
-	ID   string `env:"SWARM_NODE_ID"`
-	Name string `env:"SWARM_NODE_NAME"`
+	ID   string `env:"SWARM_NODE_ID" json:"id"`
+	Name string `env:"SWARM_NODE_NAME" json:"name"`
 }
 
 func (n Node) ToMap() map[string]any {
