@@ -18,3 +18,41 @@ A small metadata contract for Docker Swarm applications, inspired by the Kuberne
 | `SWARM_NODE_NAME`    | Swarm node name      | `{{.Node.Hostname}}` |
 
 `SWARM_TASK_SLOT` is optional in the SDK because a slot is not meaningful for every type of Swarm service.
+
+## Go
+
+Install the package:
+
+```bash
+go get github.com/swarm-deploy/downward/go
+```
+
+Load metadata from the environment:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/swarm-deploy/downward/go"
+)
+
+func main() {
+	info, err := downward.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("stack: %s\n", info.Stack.Name)
+	fmt.Printf("service: %s (%s)\n", info.Service.Name, info.Service.ID)
+	fmt.Printf("task: %s (%s)\n", info.Task.Name, info.Task.ID)
+
+	if info.Task.Slot != nil {
+		fmt.Printf("task slot: %d\n", *info.Task.Slot)
+	}
+
+	fmt.Printf("node: %s (%s)\n", info.Node.Name, info.Node.ID)
+}
+```
