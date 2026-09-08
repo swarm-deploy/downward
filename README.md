@@ -19,6 +19,8 @@ A small metadata contract for Docker Swarm applications, inspired by the Kuberne
 
 `SWARM_TASK_SLOT` is optional in the SDK because a slot is not meaningful for every type of Swarm service.
 
+When deploying with [swarm-deploy](https://github.com/swarm-deploy/swarm-deploy), these variables can be injected automatically. swarm-deploy adds the environment contract to services, while Docker Swarm resolves the service, task, and node placeholders at runtime.
+
 ## Go
 
 Install the package:
