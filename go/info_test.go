@@ -41,3 +41,22 @@ func TestLoadInvalidTaskSlot(t *testing.T) {
 	_, err := Load()
 	require.Error(t, err)
 }
+
+func TestServiceShortName(t *testing.T) {
+	tests := []struct {
+		name      string
+		service   string
+		stackName string
+		want      string
+	}{
+		{name: "with stack prefix", service: "billing_api", stackName: "billing", want: "api"},
+		{name: "without stack prefix", service: "api", stackName: "billing", want: "api"},
+		{name: "without stack name", service: "billing_api", want: "billing_api"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, Service{Name: tt.service}.ShortName(tt.stackName))
+		})
+	}
+}
