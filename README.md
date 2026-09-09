@@ -8,7 +8,7 @@ A small metadata contract for Docker Swarm applications, inspired by the Kuberne
 
 | Environment variable | Description          | Docker Swarm source  |
 | -------------------- | -------------------- | -------------------- |
-| `SWARM_STACK_NAME`   | Stack name           | deployment context   |
+| `SWARM_STACK_NAME`   | Stack name           | `{{index .Service.Labels "com.docker.stack.namespace"}}`    |
 | `SWARM_SERVICE_ID`   | Service ID           | `{{.Service.ID}}`    |
 | `SWARM_SERVICE_NAME` | Service name         | `{{.Service.Name}}`  |
 | `SWARM_TASK_ID`      | Task ID              | `{{.Task.ID}}`       |
