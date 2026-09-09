@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Info struct {
@@ -69,6 +70,14 @@ func (s Stack) ToMap() map[string]any {
 type Service struct {
 	ID   string `env:"SWARM_SERVICE_ID" json:"id"`
 	Name string `env:"SWARM_SERVICE_NAME" json:"name"`
+}
+
+func (s Service) ShortName(stackName string) string {
+	if stackName == "" {
+		return s.Name
+	}
+
+	return strings.TrimPrefix(s.Name, stackName+"_")
 }
 
 func (s Service) ToMap() map[string]any {
