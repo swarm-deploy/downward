@@ -58,3 +58,7 @@ func main() {
 	fmt.Printf("node: %s (%s)\n", info.Node.Name, info.Node.ID)
 }
 ```
+
+## OpenTelemetry
+
+Use [downward-otel](https://github.com/swarm-deploy/downward-otel) to expose downward metadata as OpenTelemetry resource attributes.
