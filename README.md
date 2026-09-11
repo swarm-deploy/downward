@@ -59,6 +59,27 @@ func main() {
 }
 ```
 
+## Python
+
+Install directly from the repository:
+
+```bash
+pip install "downward @ git+https://github.com/swarm-deploy/downward.git#subdirectory=python"
+```
+
+Load metadata from the environment:
+
+```python
+import downward
+
+info = downward.load()
+
+print(info.stack.name)
+print(info.service.name)
+print(info.task.slot)
+print(info.node.name)
+```
+
 ## OpenTelemetry
 
 Use [downward-otel](https://github.com/swarm-deploy/downward-otel) to expose downward metadata as OpenTelemetry resource attributes.
